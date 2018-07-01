@@ -1,7 +1,7 @@
 plugins {
   id "org.sonarqube" version "2.6.2"
   id "org.kordamp.markdown.convert" version "1.1.0"
-  id 'org.openstreetmap.josm' version "0.4.4"
+  id 'org.openstreetmap.josm' version "0.5.0"
   id "com.github.ben-manes.versions" version "0.17.0"
   id 'com.github.spotbugs' version '1.6.1'
   id "net.ltgt.errorprone" version "0.0.14"
@@ -17,14 +17,6 @@ apply from: 'gradle/tool-config.gradle'
 
 sourceCompatibility = '1.8'
 
-def versionProcess = new ProcessBuilder("git", "describe", "--always", "--dirty").start()
-versionProcess.waitFor()
-if (versionProcess.exitValue() != 0) {
-  logger.error("Could not determine the current version of this JOSM plugin!")
-  version = "‹unknown›"
-} else {
-  version = versionProcess.in.text.trim()
-}
 archivesBaseName = 'MicrosoftStreetside'
 
 repositories {
@@ -38,8 +30,8 @@ dependencies {
   compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.4'
   compile 'us.monoid.web:resty:0.3.2'
   compile 'us.monoid.web:resty:0.3.2'
-  testImplementation ('org.openstreetmap.josm:josm-unittest'){changing=true}
-  testImplementation 'com.github.tomakehurst:wiremock:2.17.0'
+  testImplementation ('org.openstreetmap.josm:josm-unittest:SNAPSHOT'){changing=true}
+  testImplementation 'com.github.tomakehurst:wiremock:2.18.0'
   testImplementation 'junit:junit:4.12'
 }
 
@@ -70,7 +62,7 @@ sourceSets {
 }
 
 josm {
-  debugPort = 7051
+  debugPort = 6827
   manifest {
     // See https://floscher.github.io/gradle-josm-plugin/kdoc/current/gradle-josm-plugin/org.openstreetmap.josm.gradle.plugin.config/-josm-manifest/old-version-download-link.html
     //oldVersionDownloadLink 13643, 'v1.5.14', new URL("https://github.com/JOSM/Mapillary/releases/download/v1.5.14/Mapillary.jar")
@@ -81,7 +73,7 @@ josm {
     //oldVersionDownloadLink 10824, 'v1.5.3', new URL('https://github.com/JOSM/Mapillary/releases/download/v1.5.3/Mapillary.jar')
   }
   i18n {
-    pathTransformer = getGithubPathTransformer('spatialdev/MicrosoftStreetside')
+    pathTransformer = getPathTransformer('github.com/spatialdev/MicrosoftStreetside/blob')
   }
 }
 

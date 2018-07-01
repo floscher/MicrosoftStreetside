@@ -43,7 +43,7 @@ deploy:
   file_glob: true
   api_key: "${GH_TOKEN}"
   file:
-    - "build/dist/Mapillary.jar"
+    - "build/dist/MicrosoftStreetside.jar"
     - "build/tmp/jar/MANIFEST.MF"
   skip_cleanup: true
   on:
@@ -75,4 +75,3 @@ matrix:
   allow_failures:
   - jdk: oraclejdk9
   - language: python
-
